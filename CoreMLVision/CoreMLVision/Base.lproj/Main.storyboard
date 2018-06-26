@@ -52,6 +52,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="descriptionTextView" destination="dSy-ou-g34" id="cvk-31-qVn"/>
                         <outlet property="photoImageView" destination="SpQ-8Z-IBS" id="9xW-S2-AFG"/>
                     </connections>
                 </viewController>

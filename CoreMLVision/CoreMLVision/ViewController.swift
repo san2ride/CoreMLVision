@@ -7,7 +7,9 @@
 //
 
 import UIKit
+import CoreML
 import Vision
+
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
@@ -16,6 +18,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     private var model = GoogLeNetPlaces()
     
     @IBOutlet weak var photoImageView: UIImageView!
+    @IBOutlet weak var descriptionTextView: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +51,23 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         let visionRequest = VNCoreMLRequest(model: visionModel) {
             request, error in
+            
+            if error != nil {
+                return
+            }
+            
+            guard let results = request.results as?
+                [VNClassificationObservation] else {
+                return
+            }
+            
+            let classifications = results.map { observation in
+                "\(observation.identifier) \(observation.confidence * 100)"
+            }
+            
+            DispatchQueue.main.async {
+                self.descriptionTextView.text = classifications.joined(separator: "\n")
+            }
         }
         
         let visionRequestHandler = VNImageRequestHandler(ciImage: ciImage, orientation: .up, options: [:])
